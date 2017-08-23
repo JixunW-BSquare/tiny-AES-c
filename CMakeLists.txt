@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.3)
-project(tinyaes_c)
+project(tinyaes)
 
 ######################################################
 
-set (COMMON_HEADER_FILES
+set (AES_LIBRARY_HEADER_FILES
     aes.h)
+
+set (COMMON_HEADER_FILES
+    ${AES_LIBRARY_HEADER_FILES})
 
 set (SOURCE_FILES
     aes.c
@@ -16,6 +19,11 @@ set (TEST_SOURCE_FILES
 
 ######################################################
 
-add_library(tinyaes SHARED ${SOURCE_FILES})
-link_libraries(tinyaes)
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+link_libraries(${PROJECT_NAME})
 add_executable(aes_test ${TEST_SOURCE_FILES})
+
+######################################################
+
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(FILES ${AES_LIBRARY_HEADER_FILES} DESTINATION include/${PROJECT_NAME})
