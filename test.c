@@ -11,11 +11,11 @@
 
 
 static void phex(uint8_t* str);
-static void test_encrypt_ecb(void);
-static void test_decrypt_ecb(void);
+static int test_encrypt_ecb(void);
+static int test_decrypt_ecb(void);
 static void test_encrypt_ecb_verbose(void);
-static void test_encrypt_cbc(void);
-static void test_decrypt_cbc(void);
+static int test_encrypt_cbc(void);
+static int test_decrypt_cbc(void);
 
 
 int main(void)
@@ -28,17 +28,19 @@ int main(void)
 #elif defined(AES256)
     printf("\nTesting AES256\n\n");
 #else
-    printf("You need to specify a symbol between AES128, AES192 or AES256. Exiting");
+    printf("You need to specify a symbol between AES128, AES192 or AES256. Exiting\n");
     return 0;
 #endif
 
-    test_encrypt_cbc();
-    test_decrypt_cbc();
-    test_decrypt_ecb();
-    test_encrypt_ecb();
+    int success = 0;
+
+    success += test_encrypt_cbc();
+    success += test_decrypt_cbc();
+    success += test_decrypt_ecb();
+    success += test_encrypt_ecb();
     test_encrypt_ecb_verbose();
 
-    return 0;
+    return success == 4 ? 0 : 1;
 }
 
 
@@ -78,7 +80,7 @@ static void test_encrypt_ecb_verbose(void)
     memset(buf2, 0, 64);
 
     // print text to encrypt, key and IV
-    printf("ECB encrypt verbose:\n\n");
+    printf("ECB encrypt verbose (result not checked):\n\n");
     printf("plain text:\n");
     for(i = (uint8_t) 0; i < (uint8_t) 4; ++i)
     {
@@ -101,7 +103,7 @@ static void test_encrypt_ecb_verbose(void)
 }
 
 
-static void test_encrypt_ecb(void)
+static int test_encrypt_ecb(void)
 {
 #ifdef AES128
     uint8_t key[] = {0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
@@ -123,7 +125,8 @@ static void test_encrypt_ecb(void)
 
   printf("ECB encrypt: ");
 
-  if(0 == memcmp((char*) out, (char*) buffer, 16))
+  int success = (0 == memcmp((char*) out, (char*) buffer, 16)) ? 1 : 0;
+  if(success)
   {
     printf("SUCCESS!\n");
   }
@@ -131,9 +134,10 @@ static void test_encrypt_ecb(void)
   {
     printf("FAILURE!\n");
   }
+  return success;
 }
 
-static void test_decrypt_cbc(void)
+static int test_decrypt_cbc(void)
 {
 
 #ifdef AES128
@@ -167,7 +171,8 @@ static void test_decrypt_cbc(void)
 
   printf("CBC decrypt: ");
 
-  if(0 == memcmp((char*) out, (char*) buffer, 64))
+  int success = (0 == memcmp((char*) out, (char*) buffer, 64)) ? 1 : 0;
+  if(success)
   {
     printf("SUCCESS!\n");
   }
@@ -175,9 +180,10 @@ static void test_decrypt_cbc(void)
   {
     printf("FAILURE!\n");
   }
+  return success;
 }
 
-static void test_encrypt_cbc(void)
+static int test_encrypt_cbc(void)
 {
 #ifdef AES128
   uint8_t key[] = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
@@ -211,7 +217,8 @@ static void test_encrypt_cbc(void)
 
   printf("CBC encrypt: ");
 
-  if(0 == memcmp((char*) out, (char*) buffer, 64))
+  int success = (0 == memcmp((char*) out, (char*) buffer, 64)) ? 1 : 0;
+  if(success)
   {
     printf("SUCCESS!\n");
   }
@@ -219,10 +226,11 @@ static void test_encrypt_cbc(void)
   {
     printf("FAILURE!\n");
   }
+  return success;
 }
 
 
-static void test_decrypt_ecb(void)
+static int test_decrypt_ecb(void)
 {
 #ifdef AES128
     uint8_t key[] = {0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
@@ -244,7 +252,8 @@ static void test_decrypt_ecb(void)
 
   printf("ECB decrypt: ");
 
-  if(0 == memcmp((char*) out, (char*) buffer, 16))
+  int success = (0 == memcmp((char*) out, (char*) buffer, 16)) ? 1 : 0;
+  if(success)
   {
     printf("SUCCESS!\n");
   }
@@ -252,5 +261,6 @@ static void test_decrypt_ecb(void)
   {
     printf("FAILURE!\n");
   }
+  return success;
 }
 
