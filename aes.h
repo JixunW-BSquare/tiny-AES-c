@@ -27,6 +27,17 @@
 void AES_ECB_encrypt(const uint8_t* input, const uint8_t* key, uint8_t *output, const uint32_t length);
 void AES_ECB_decrypt(const uint8_t* input, const uint8_t* key, uint8_t *output, const uint32_t length);
 
+#if defined(AES256) && (AES256 == 1)
+#define AES256_ECB_encrypt_buffer AES_ECB_encrypt_buffer
+#define AES256_ECB_decrypt_buffer AES_ECB_decrypt_buffer
+#elif defined(AES192) && (AES192 == 1)
+#define AES192_ECB_encrypt_buffer AES_ECB_encrypt_buffer
+#define AES192_ECB_decrypt_buffer AES_ECB_decrypt_buffer
+#else
+#define AES128_ECB_encrypt_buffer AES_ECB_encrypt_buffer
+#define AES128_ECB_decrypt_buffer AES_ECB_decrypt_buffer
+#endif
+
 #endif // #if defined(ECB) && (ECB == !)
 
 
@@ -34,6 +45,17 @@ void AES_ECB_decrypt(const uint8_t* input, const uint8_t* key, uint8_t *output, 
 
 void AES_CBC_encrypt_buffer(uint8_t* output, uint8_t* input, uint32_t length, const uint8_t* key, const uint8_t* iv);
 void AES_CBC_decrypt_buffer(uint8_t* output, uint8_t* input, uint32_t length, const uint8_t* key, const uint8_t* iv);
+
+#if defined(AES256) && (AES256 == 1)
+#define AES256_CBC_encrypt_buffer AES_CBC_encrypt_buffer
+#define AES256_CBC_decrypt_buffer AES_CBC_decrypt_buffer
+#elif defined(AES192) && (AES192 == 1)
+#define AES192_CBC_encrypt_buffer AES_CBC_encrypt_buffer
+#define AES192_CBC_decrypt_buffer AES_CBC_decrypt_buffer
+#else
+#define AES128_CBC_encrypt_buffer AES_CBC_encrypt_buffer
+#define AES128_CBC_decrypt_buffer AES_CBC_decrypt_buffer
+#endif
 
 #endif // #if defined(CBC) && (CBC == 1)
 
