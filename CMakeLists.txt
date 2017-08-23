@@ -23,6 +23,8 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 link_libraries(${PROJECT_NAME})
 add_executable(aes_test ${TEST_SOURCE_FILES})
 
+add_custom_target(buildtest COMMAND ./aes_test)
+
 ######################################################
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
